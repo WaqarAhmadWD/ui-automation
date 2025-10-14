@@ -1,5 +1,6 @@
 import subprocess
 import time
+import uiautomation as auto
 
 from uiautomation import Keys
 
@@ -59,3 +60,20 @@ def perform_action(control, action, keys=None):
     elif action == "shift+tab":
         control.Shift+Tab()
     time.sleep(1)
+
+def get_all_windows():
+    """Get all current top-level windows with their handles"""
+    windows = []
+    try:
+        for window in auto.GetRootControl().GetChildren():
+            if window.ClassName and window.Name:
+                windows.append({
+                    'handle': window.NativeWindowHandle,
+                    'name': window.Name,
+                    'class': window.ClassName,
+                    'control': window
+                })
+    except Exception as e:
+        print(f"⚠️ Error getting windows: {e}")
+    return windows
+
