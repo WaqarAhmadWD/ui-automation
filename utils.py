@@ -93,3 +93,8 @@ def get_current_window():
         print(f"⚠️ Error getting current window: {e}")
     return None
 
+def do_work(control, work,action="click",keys=None):
+    task = get_content_by_name(control, name=work)
+    perform_action(task, action, keys)
+    current_window = get_current_window()['control']
+    return current_window
