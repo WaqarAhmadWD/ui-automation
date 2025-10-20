@@ -1,8 +1,7 @@
 import uiautomation as auto
 import utils
-utils.open_app(r'"C:\Program Files\Google\Chrome\Application\chrome.exe"')
-chrome_window = auto.WindowControl(searchDepth=1, ClassName='Chrome_WidgetWin_1')
-chrome_window.SetActive()
+chrome_window = utils.open_app(r'"C:\Program Files\Google\Chrome\Application\chrome.exe"')['control']
+
 
 
 

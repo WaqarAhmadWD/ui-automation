@@ -43,10 +43,35 @@ def get_content_by_name(control, name=None, depth=0, max_depth=15):
     
     return None
 
-def open_app(app_url):
-    subprocess.Popen(app_url)
-    time.sleep(3)
-    return app_url
+def open_app(app_url, wait_time=3):
+    """Open an application and return its window control"""
+    try:
+        # Open the application
+        subprocess.Popen(app_url)
+        time.sleep(wait_time)
+        
+        # Get the current foreground window (should be the newly opened app)
+        window = auto.GetForegroundControl()
+        
+        if window:
+            # Ensure the window is active and in foreground
+            try:
+                window.SetFocus()
+            except:
+                pass  # Some windows don't support SetFocus
+            
+            return {
+                'handle': window.NativeWindowHandle,
+                'name': window.Name,
+                'class': window.ClassName,
+                'control': window
+            }
+        else:
+            print(f"⚠️ Could not get window for app: {app_url}")
+            return None
+    except Exception as e:
+        print(f"⚠️ Error opening app: {e}")
+        return None
 
 def perform_action(control, action, keys=None):
     if action == "click":
