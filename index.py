@@ -1,7 +1,5 @@
-import uiautomation as auto
-import constant
 import utils
-# chrome_window = utils.open_app(r'"C:\Program Files\Google\Chrome\Application\chrome.exe"')['control']
-# utils.do_work_chain(chrome_window, constant.chainOfTasks)
 
-utils.useAiChain("write a message in notepad that says 'Hello, World!'")
+# utils.useAiChain("write a message in notepad that says 'Hello, World!'")
+
+utils.useAiChain("open chrome and go to https://waqar.website")

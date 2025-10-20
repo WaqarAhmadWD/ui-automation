@@ -183,7 +183,7 @@ def useAiChain(prompt, data=None,current_window=None,previewResponse=None):
     response = useAi(prompt, data=data,previewResponse=previewResponse)
     chainOfTasks = response["chainOfTasks"]
     latestTask = chainOfTasks[-1]
-    print(f"Message: {response["message"]}, error: {response["error"]}")
+    print(response)
     if latestTask["type"] == "open app":
         current_window = open_app(latestTask["task"])['control']
         latestTask["status"] = "success"
