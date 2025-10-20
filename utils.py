@@ -123,3 +123,8 @@ def do_work(control, work,action="click",keys=None):
     perform_action(task, action, keys)
     current_window = get_current_window()['control']
     return current_window
+
+def do_work_chain(current_window, chainOfTasks):
+    for task in chainOfTasks:
+        current_window = do_work(current_window, task["task"], task["action"], task["keys"])
+    return current_window
