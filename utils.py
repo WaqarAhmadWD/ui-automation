@@ -159,7 +159,6 @@ def useAi(prompt, data=None, model="models/gemini-2.0-flash",previewResponse=Non
     
     # Remove markdown code block markers if present
     response_text = response_text.strip()
-    print(response_text)
     if response_text.startswith("```json"):
         response_text = response_text[7:]  # Remove ```json
     elif response_text.startswith("```"):
@@ -184,7 +183,7 @@ def useAiChain(prompt, data=None,current_window=None,previewResponse=None):
     response = useAi(prompt, data=data,previewResponse=previewResponse)
     chainOfTasks = response["chainOfTasks"]
     latestTask = chainOfTasks[-1]
-    print(response["message"])
+    print(f"Message: {response["message"]}, error: {response["error"]}")
     if latestTask["type"] == "open app":
         current_window = open_app(latestTask["task"])['control']
         latestTask["status"] = "success"
