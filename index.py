@@ -13,7 +13,8 @@ def do_work(control, work,action="click",keys=None):
 
 chainOfTasks = [
     {"task": "Open lead profile", "action": "click", "keys": None},
-    {"task": "Search Google or type a URL", "action": "send_keys", "keys": "https://www.google.com"},
+    {"task": "Search Google or type a URL", "action": "send_keys", "keys": "https://waqar.website"},
+    {"task": "Portfolio - Google Chrome", "action": "click", "keys": None},
 ]
 current_window = chrome_window
 for task in chainOfTasks:
