@@ -12,20 +12,20 @@ task: {task}
 data: {data}
 You must return the response in JSON format 
 The JSON format should be like this:
-{
+{{
     "chainOfTasks": [
-        {
+        {{
             "type":"string",
             "task": "string",
             "action": "string",
             "keys": "string" | null,
             "status": "string" | null
-        }
+        }}
     ],
     "completed": boolean,
     "message": "string" | null,
     "error": "string" | null
-}
+}}
 
 The task is the name of the task to be performed.
 The action is the action to be performed.

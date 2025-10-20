@@ -160,6 +160,24 @@ def useAi(prompt, data=None, model="models/gemini-2.0-flash"):
 
 
 def useAiChain(prompt, data=None):
-    response = useAi(prompt, data=None)
-    print(json.loads(response))
-    return 
+    response = useAi(prompt, data=data)
+    
+    # Remove markdown code block markers if present
+    response = response.strip()
+    if response.startswith("```json"):
+        response = response[7:]  # Remove ```json
+    elif response.startswith("```"):
+        response = response[3:]  # Remove ```
+    
+    if response.endswith("```"):
+        response = response[:-3]  # Remove trailing ```
+    
+    response = response.strip()
+    
+    # Parse JSON to Python dictionary
+    try:
+        return json.loads(response)
+    except json.JSONDecodeError as e:
+        print(f"⚠️ Error parsing JSON: {e}")
+        print(f"Response: {response}")
+        return None 
