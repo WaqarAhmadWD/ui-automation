@@ -2,3 +2,4 @@
 2025-10-14 12:48:31.122 utils.py[53] perform_action -> Can not move cursor. ButtonControl's BoundingRectangle is (0,0,0,0)[0x0]. SearchProperties: {ControlType: ButtonControl}
 2025-10-14 12:51:33.146 utils.py[53] perform_action -> Can not move cursor. ButtonControl's BoundingRectangle is (0,0,0,0)[0x0]. SearchProperties: {ControlType: ButtonControl}
 2025-10-14 12:52:41.357 utils.py[53] perform_action -> Can not move cursor. ButtonControl's BoundingRectangle is (0,0,0,0)[0x0]. SearchProperties: {ControlType: ButtonControl}
+2025-10-20 09:14:54.660 utils.py[53] perform_action -> Can not move cursor. ButtonControl's BoundingRectangle is (0,0,0,0)[0x0]. SearchProperties: {ControlType: ButtonControl}

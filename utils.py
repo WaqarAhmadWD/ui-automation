@@ -52,7 +52,8 @@ def perform_action(control, action, keys=None):
     if action == "click":
         control.Click()
     elif action == "send_keys":
-        control.SendKeys(Keys)
+        control.SendKeys(keys)
+        control.SendKeys("{ENTER}")
     elif action == "enter":
         control.Enter()
     elif action == "tab":
@@ -76,4 +77,19 @@ def get_all_windows():
     except Exception as e:
         print(f"⚠️ Error getting windows: {e}")
     return windows
+
+def get_current_window():
+    """Get the currently active/focused window"""
+    try:
+        window = auto.GetForegroundControl()
+        if window:
+            return {
+                'handle': window.NativeWindowHandle,
+                'name': window.Name,
+                'class': window.ClassName,
+                'control': window
+            }
+    except Exception as e:
+        print(f"⚠️ Error getting current window: {e}")
+    return None
 
