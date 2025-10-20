@@ -1,8 +1,14 @@
 import subprocess
 import time
 import uiautomation as auto
+import os
+import google.generativeai as genai
+from dotenv import load_dotenv
 
 from uiautomation import Keys
+
+# Load environment variables
+load_dotenv()
 
 
 def get_content_all(control, depth=0, max_depth=15, all_content=None):
@@ -128,3 +134,22 @@ def do_work_chain(current_window, chainOfTasks):
     for task in chainOfTasks:
         current_window = do_work(current_window, task["task"], task["action"], task["keys"])
     return current_window
+
+def useAi(prompt, data, model="models/gemini-2.0-flash", max_retries=3, retry_delay=40):
+ 
+    # Get API key from environment
+    api_key = os.getenv('API_KEY')
+ 
+    # Configure Gemini
+    genai.configure(api_key=api_key)
+    
+ 
+    ai_model = genai.GenerativeModel(model)
+    
+    # Combine prompt and data
+    full_prompt = f"{prompt}\n\nData: {data}\n\nInstructions: You must return the response in JSON format "
+    
+    # Generate response
+    response = ai_model.generate_content(full_prompt)
+    
+    return response.text
