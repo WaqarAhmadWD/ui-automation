@@ -155,29 +155,44 @@ def useAi(prompt, data=None, model="models/gemini-2.0-flash"):
     # Generate response
     response = ai_model.generate_content(full_prompt)
     
-    return response.text
-
-
-
-def useAiChain(prompt, data=None):
-    response = useAi(prompt, data=data)
+    # Get text from response object
+    response_text = response.text
     
     # Remove markdown code block markers if present
-    response = response.strip()
-    if response.startswith("```json"):
-        response = response[7:]  # Remove ```json
-    elif response.startswith("```"):
-        response = response[3:]  # Remove ```
+    response_text = response_text.strip()
+    if response_text.startswith("```json"):
+        response_text = response_text[7:]  # Remove ```json
+    elif response_text.startswith("```"):
+        response_text = response_text[3:]  # Remove ```
     
-    if response.endswith("```"):
-        response = response[:-3]  # Remove trailing ```
+    if response_text.endswith("```"):
+        response_text = response_text[:-3]  # Remove trailing ```
     
-    response = response.strip()
+    response_text = response_text.strip()
     
     # Parse JSON to Python dictionary
     try:
-        return json.loads(response)
+        return json.loads(response_text)
     except json.JSONDecodeError as e:
         print(f"⚠️ Error parsing JSON: {e}")
-        print(f"Response: {response}")
+        print(f"Response: {response_text}")
         return None 
+
+
+
+def useAiChain(prompt, data=None,current_window=None):
+    response = useAi(prompt, data=data)
+    chainOfTasks = response["chainOfTasks"]
+    latestTask = chainOfTasks[-1]
+    print(response["message"])
+    if response["completed"]:
+        return response["message"]
+    else:
+        if latestTask["type"] == "open app":
+            current_window = open_app(latestTask["task"])['control']
+            latestTask["status"] = "success"
+        elif latestTask["type"] == "perform action":
+            current_window = do_work(current_window, latestTask["task"], latestTask["action"], latestTask["keys"])
+            latestTask["status"] = "success"
+        return useAiChain(response,get_content_all(current_window),current_window)
+   

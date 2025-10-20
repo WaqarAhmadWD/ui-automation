@@ -38,4 +38,5 @@ the type is the type of the task. it can be "open app", "perform action".
 if it is open app, then task name should be a url or a path to the app. like r'"C:\Program Files\Google\Chrome\Application\chrome.exe"'
 if it is perform action, then task name must exits in data always.
 if there is no data, then it is a start and it means we need to open an app.
+per prompt only one task is allowed to added in chainOfTasks.
 """
