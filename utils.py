@@ -138,7 +138,7 @@ def do_work_chain(current_window, chainOfTasks):
         current_window = do_work(current_window, task["task"], task["action"], task["keys"])
     return current_window
 
-def useAi(prompt, data=None, model="models/gemini-2.0-flash"):
+def useAi(prompt, data=None, model="models/gemini-2.0-flash",previewResponse=None):
  
     # Get API key from environment
     api_key = os.getenv('API_KEY')
@@ -150,16 +150,16 @@ def useAi(prompt, data=None, model="models/gemini-2.0-flash"):
     ai_model = genai.GenerativeModel(model)
     
     # Combine prompt and data
-    full_prompt = constant.get_instruction(prompt, data)
+    full_prompt = constant.get_instruction(prompt, data,previewResponse)
     
     # Generate response
     response = ai_model.generate_content(full_prompt)
-    
     # Get text from response object
     response_text = response.text
     
     # Remove markdown code block markers if present
     response_text = response_text.strip()
+    print(response_text)
     if response_text.startswith("```json"):
         response_text = response_text[7:]  # Remove ```json
     elif response_text.startswith("```"):
@@ -180,19 +180,20 @@ def useAi(prompt, data=None, model="models/gemini-2.0-flash"):
 
 
 
-def useAiChain(prompt, data=None,current_window=None):
-    response = useAi(prompt, data=data)
+def useAiChain(prompt, data=None,current_window=None,previewResponse=None):
+    response = useAi(prompt, data=data,previewResponse=previewResponse)
     chainOfTasks = response["chainOfTasks"]
     latestTask = chainOfTasks[-1]
     print(response["message"])
+    if latestTask["type"] == "open app":
+        current_window = open_app(latestTask["task"])['control']
+        latestTask["status"] = "success"
+    elif latestTask["type"] == "perform action":
+        current_window = do_work(current_window, latestTask["task"], latestTask["action"], latestTask["keys"])
+        latestTask["status"] = "success"
+    
     if response["completed"]:
         return response["message"]
     else:
-        if latestTask["type"] == "open app":
-            current_window = open_app(latestTask["task"])['control']
-            latestTask["status"] = "success"
-        elif latestTask["type"] == "perform action":
-            current_window = do_work(current_window, latestTask["task"], latestTask["action"], latestTask["keys"])
-            latestTask["status"] = "success"
-        return useAiChain(response,get_content_all(current_window),current_window)
+        return useAiChain(prompt,get_content_all(current_window),current_window,response)
    

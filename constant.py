@@ -5,11 +5,12 @@ chainOfTasks = [
 ]
 
 
-def get_instruction(task,data):
+def get_instruction(task,data,previewResponse=None):
     return f"""
 You are a helpful assistant that can perform tasks on a computer.
 task: {task}
 data: {data}
+previewResponse: {previewResponse}
 You must return the response in JSON format 
 The JSON format should be like this:
 {{
